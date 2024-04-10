@@ -21,6 +21,7 @@ print('PROGRAM STARTED ON ',CD)
 import winsound; import pytest;import time;import json
 import os;import time;import re;import requests
 import xlwings as xw
+import numpy as np
 #from selenium import webdriver ;from selenium.webdriver.common.by import By
 #from selenium.webdriver.common.action_chains import ActionChains ;from selenium.webdriver.support import expected_conditions
 #from selenium.webdriver.support.wait import WebDriverWait ;from selenium.webdriver.common.keys import Keys
@@ -103,12 +104,13 @@ print(ui_lr)
 print(log_lr)
 
 myLST = []
+media = "UNCHECKED"
 #my_red = openpyxl.styles.colors.Color(rgb='00FF0000')
 #RANGEWA = "A2:A" + str(sheetwa.max_row)
 #print('CURRENT RANGE - ',RANGEWA)
 #for rowOfCellObjects in sheetwa[RANGEWA]:
 for x in range(ui_lr_B,ui_lr+1):
-    #x= 3       
+    #x= 2       
     #ERROR_HANDLER_1
     try:        
         #x = 2
@@ -155,7 +157,7 @@ for x in range(ui_lr_B,ui_lr+1):
             try:
                 #reviewname = self_driver.find_element(By.CLASS_NAME,'a-profile-name').text
                 #AWS = self_driver.find_element(By.XPATH,'/html/body/div[1]/footer/div/ul[2]/li[1]/a')
-                AWS = self_driver.find_element(By.XPATH,"//*[contains(@class, 'a-profile-name')]").text
+                AWS = self_driver.find_element(By.XPATH,"//*[contains(@id, 'cr-customer-review')]").text
                 
             except:
                 
@@ -179,20 +181,38 @@ for x in range(ui_lr_B,ui_lr+1):
             AWS = "VALID"
             print(AWS)
             
-            #Patch Added on 15th August 2023 by RA
+            #Patch Added on 10 APRIL 2024 by RA - CHECK PROFILE LINK
             try:
-                p_link = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div/div[6]/div[1]/span').text
-                p_link = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div/div[7]/div[1]/div[2]/div[1]/span').text
-                print(p_link)
-                if p_link == 'Community activity':
-                    AWS = 'PROFILE_LINK'
-                    ui_ws.range("B" + str(x)).value = AWS
+                p_link = self_driver.find_element(By.CLASS_NAME,'a-size-extra-large card-title').text
+                p_link = "PROFILE LINK"
+                ui_ws.range("B" + str(x)).value = p_link
+                continue
+            except:
+                pass
+            
+            #CHECK ALL REVIEWS
+            try:    
+                all_reviews = self_driver.find_element(By.CLASS_NAME,"a-size-medium view-point-title").text
+                if all_reviews == "Top positive review":
+                    all_reviews = "ALL REVIEWS"
+                    ui_ws.range("B" + str(x)).value = all_reviews
                     continue
                 else:
                     pass
             except:
                 pass
-    
+            
+            
+            #Patch added on 10th APR 2024 - Check Media
+            try:
+                media = self_driver.find_element(By.CLASS_NAME,"review-image-tile")
+                media = "YES"
+            except:
+                media = "NO"
+                
+            
+                
+                
             try:
                 #verifiedpurch = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/span[2]').text
                 verifiedpurch = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'avp-badge')]").text
@@ -218,7 +238,8 @@ for x in range(ui_lr_B,ui_lr+1):
             #reviewstar = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/i').get_attribute("class")
             reviewstar = reviewstar.replace('a-icon a-icon-star a-star-','')
             reviewstar = reviewstar.replace(' review-rating','')
-    
+            
+            
             reviewID = REVIEW_LINK
             reviewID = reviewID.split('/ref')[0]
             reviewID = reviewID.split('?ref')[0]
@@ -293,6 +314,12 @@ for x in range(ui_lr_B,ui_lr+1):
         ui_ws.range("G" + str(x)).value = reviewdate
         ui_ws.range("H" + str(x)).value = prodname
         ui_ws.range("I" + str(x)).value = reviewhead
+        
+        word_count = np.char.count(reviewbody,' ') + 1
+        ui_ws.range("J" + str(x)).value = word_count
+        ui_ws.range("K" + str(x)).value = media
+        
+
         #sheetwa.cell(row=C_R, column=10).value = reviewbody
         #review_word_count = len(reviewbody.split())
         #sheetwa.cell(row=C_R, column=11).value = review_word_count
