@@ -88,7 +88,7 @@ app.UpdateLinks = False
 app.display_alerts = False
 
 filepath = r"C:\Users\aarja\Downloads\Py\Review_sheet.xlsx"
-#filepath = r"C:\Users\Rish\Documents\Client projects Python\CDM\Review_sheet.xlsx"
+#filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
 mywb = xw.books.open(filepath, update_links=False)
 print(filepath)
 
@@ -96,7 +96,7 @@ print(filepath)
 #Open excel workbook and get details      
 #wb = load_workbook(EWBP)
 ui_ws =  xw.Book("Review_sheet.xlsx").sheets['Ui']
-log_ws = xw.Book("Review_sheet.xlsx").sheets['Log']
+log_ws = xw.Book("Review_sheet.xlsx").sheets['Log'] 
 ui_lr = ui_ws.range('A1048576').end('up').row
 ui_lr_B = ui_ws.range('B1048576').end('up').row +1
 log_lr = log_ws.range('B1048576').end('up').row +1
@@ -250,13 +250,16 @@ for x in range(ui_lr_B,ui_lr+1):
     
     #--------------  FLIPKART --------------------------------------------------------------
         elif CASEWA == "FLIPKART":
+            print('FLIPKART LINK FOUND')
             reviewID = "FLIPKART"
             flip_driver.get(REVIEW_LINK)
             flip_driver.implicitly_wait(3)
     
             try:
                 #reviewname = self_driver.find_element_by_class_name('a-profile-name').text
-                AWS = flip_driver.find_element(By.CLASS_NAME,'_1sk9Vt').text
+                #AWS = flip_driver.find_element(By.CLASS_NAME,'_4Vy1Ba row').text
+                AWS = flip_driver.find_element(By.CLASS_NAME,"kuNEeU").text
+                #print(AWS)
             except:
                 AWS = "INVALID"
                 print(AWS)
@@ -267,15 +270,16 @@ for x in range(ui_lr_B,ui_lr+1):
             verifiedpurch = "BLANK"
             AWS = "VALID"
             try:
-                verifiedpurch = flip_driver.find_element(By.XPATH,"(//div[@class='_1sk9Vt'])[2]").text
+                verifiedpurch = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[2]").text
             except:
                 verifiedpurch = "NO"
     
-            reviewname = flip_driver.find_element(By.CLASS_NAME,'_1sk9Vt').text
+            reviewname = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[1]").text
+            
             reviewhead = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[2]').text
             reviewbody = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[2]').text
             prodname = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[1]/div/div/div[1]/a').text
-            reviewdate = flip_driver.find_element(By.XPATH,"(//div[@class='_1sk9Vt'])[3]").text
+            reviewdate = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[3]").text
             #reviewdate = reviewdate[reviewdate.index(' on') + len(' on'):]
             #flip_driver.save_screenshot(os.path.join(os.path.dirname(os.path.realpath('Review_validator.Py')),'SS', 'FLIPKART_ROW_' + str(C_R) + '_' + reviewname + '.PNG'))
     
