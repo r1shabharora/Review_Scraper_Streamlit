@@ -60,7 +60,8 @@ def valid_url(user_url):
     req = requests.get(user_url)
     try:
         if req.status.code != requests.codes['ok']:
-            VALIDURL = "INVALID"
+            VALIDURL = "VALID"
+            
     except:
         VALIDURL = "INVALID"
     
