@@ -42,16 +42,16 @@ cwd = os.getcwd()
 print(cwd)
 
 script_dir = os.path.dirname(os.path.realpath('Review_validator.py'))
-config_dir = os.path.dirname(os.path.realpath('Review_validator.py')) + '\Config_files'
-print(script_dir)
-print(config_dir)
+#config_dir = os.path.dirname(os.path.realpath('Review_validator.py')) + '\Config_files'
+#print(script_dir)
+#print(config_dir)
 
 #GCDP = os.path.join(config_dir, "chromedriver.exe")
 #GCDP = r"C:\Users\aarja\Downloads\Py\Config_files\chromedriver.exe"
 #GCDP = r"C:\Users\Rish\Documents\chromedriver.exe"
 EWBP = os.path.join(script_dir, "Review_sheet.xlsx")
 #print(GCDP)
-print(EWBP)
+#print(EWBP)
 
 #class TestLoginanddownloadreport():
  # def setup_method(self_driver, method):
@@ -88,8 +88,8 @@ app = xw.App(visible=True)
 app.UpdateLinks = False
 app.display_alerts = False
 
-filepath = r"C:\Users\aarja\Downloads\Py\Review_sheet.xlsx"
-#filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
+#filepath = r"C:\Users\aarja\Downloads\Py\Review_sheet.xlsx"
+filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
 mywb = xw.books.open(filepath, update_links=False)
 print(filepath)
 
@@ -113,238 +113,238 @@ media = "UNCHECKED"
 for x in range(ui_lr_B,ui_lr+1):
     #x= 2       
     #ERROR_HANDLER_1
-    try:        
-        #x = 2
-        AWS = reviewID = reviewname = verifiedpurch = reviewstar = reviewdate = prodname = reviewhead = ''
-        print('processing row number - ',x)
-        #for rowOfCellObjects in sheetwa.iter_cols(min_row=1,min_col=3,max_col=3):
-        #for cellObj in rowOfCellObjects:
-        REVIEW_LINK = ui_ws.range("A" + str(x)).value
-        #C_R = cellObj.row
-        #print(cellObj.value)
-        #print(cellObj.row)
+    #try:        
+    #x = 2
+    AWS = reviewID = reviewname = verifiedpurch = reviewstar = reviewdate = prodname = reviewhead = ''
+    print('processing row number - ',x)
+    #for rowOfCellObjects in sheetwa.iter_cols(min_row=1,min_col=3,max_col=3):
+    #for cellObj in rowOfCellObjects:
+    REVIEW_LINK = ui_ws.range("A" + str(x)).value
+    #C_R = cellObj.row
+    #print(cellObj.value)
+    #print(cellObj.row)
+
+    if (type(REVIEW_LINK) == None):
+        print("LINK is empty")
+        continue
+    elif REVIEW_LINK == None:
+        print("LINK is empty")
+        continue
+    else:
+        print("LINK is NOT empty")
+
+    self_driver.get('https://www.google.com/')
+    time.sleep(2)
+    #print('OPENING LINK - ',REVIEW_LINK)
+    self_driver.get(REVIEW_LINK)
+    self_driver.implicitly_wait(6)
+
+    #CHECK WHICH SITE IT IS
+    CASEWA = 'NONE'
+    if 'ALL_REVIEWS' in REVIEW_LINK.upper():
+        CASEWA = "ALL_REVIEW"
+        ui_ws.range("B" + str(x)).color = (255,0,0)
+    elif 'AMAZON' in REVIEW_LINK.upper():
+        CASEWA = 'AMAZON'
+    elif 'FLIPKART' in REVIEW_LINK.upper():
+        CASEWA = 'FLIPKART'
+    else:
+        pass
+    print('Current link is for',CASEWA)
+    AWS = "BLANK"
     
-        if (type(REVIEW_LINK) == None):
-            print("LINK is empty")
+    if CASEWA == "AMAZON":
+        try:
+            #reviewname = self_driver.find_element(By.CLASS_NAME,'a-profile-name').text
+            #AWS = self_driver.find_element(By.XPATH,'/html/body/div[1]/footer/div/ul[2]/li[1]/a')
+            AWS = self_driver.find_element(By.XPATH,"//*[contains(@id, 'cr-customer-review')]").text
+        except:
+            #captcha_check = self_driver.find_element(By.CLASS_NAME,'a-last').text
+            time.sleep(1)
+            ui_ws.range("B" + str(x)).value = "INVALID"
+            ui_ws.range("B" + str(x)).color = (255,0,0)
             continue
-        elif REVIEW_LINK == None:
-            print("LINK is empty")
-            continue
-        else:
-            print("LINK is NOT empty")
-    
-        self_driver.get('https://www.google.com/')
-        time.sleep(2)
-        #print('OPENING LINK - ',REVIEW_LINK)
-        self_driver.get(REVIEW_LINK)
-        self_driver.implicitly_wait(6)
-    
-        #CHECK WHICH SITE IT IS
-        CASEWA = 'NONE'
-        if 'ALL_REVIEWS' in REVIEW_LINK.upper():
-            CASEWA = "ALL_REVIEW"
-        elif 'AMAZON' in REVIEW_LINK.upper():
-            CASEWA = 'AMAZON'
-        elif 'FLIPKART' in REVIEW_LINK.upper():
-            CASEWA = 'FLIPKART'
-        elif 'BIGBASKET' in REVIEW_LINK.upper():
-            CASEWA = 'BIGBASKET'
-        else:
-            pass
-        print('Current link is for',CASEWA)
-        AWS = "BLANK"
-        if CASEWA == "AMAZON":
-    
-            try:
-                #reviewname = self_driver.find_element(By.CLASS_NAME,'a-profile-name').text
-                #AWS = self_driver.find_element(By.XPATH,'/html/body/div[1]/footer/div/ul[2]/li[1]/a')
-                AWS = self_driver.find_element(By.XPATH,"//*[contains(@id, 'cr-customer-review')]").text
-                
-            except:
-                
-                captcha_check = self_driver.find_element(By.CLASS_NAME,'a-last').text
-                time.sleep(1)
-                if 'Sorry, we' in captcha_check:
-                    AWS = "UNCHECKED_DUE_TO_CAPTCHA"
-                    ui_ws.range("B" + str(x)).value = AWS
-                    ui_ws.range("B" + str(x)).color = (255,255,0)
-                    print(AWS)
-                    time.sleep(5)
-                    continue
-                else:
-                    AWS = "INVALID"
-                    ui_ws.range("B" + str(x)).value = AWS
-                    ui_ws.range("B" + str(x)).color = (255,0,0)
-                    print(AWS)
-                    continue
-        
-            verifiedpurch = "BLANK"
-            AWS = "VALID"
-            print(AWS)
-            
-            #Patch Added on 10 APRIL 2024 by RA - CHECK PROFILE LINK
-            try:
-                p_link = self_driver.find_element(By.CLASS_NAME,'a-size-extra-large card-title').text
-                p_link = "PROFILE LINK"
-                ui_ws.range("B" + str(x)).value = p_link
-                continue
-            except:
-                pass
-            
-            #CHECK ALL REVIEWS
-            try:    
-                all_reviews = self_driver.find_element(By.CLASS_NAME,"a-size-medium view-point-title").text
-                if all_reviews == "Top positive review":
-                    all_reviews = "ALL REVIEWS"
-                    ui_ws.range("B" + str(x)).value = all_reviews
-                    continue
-                else:
-                    pass
-            except:
-                pass
-            
-            
-            #Patch added on 10th APR 2024 - Check Media
-            try:
-                media = self_driver.find_element(By.CLASS_NAME,"review-image-tile")
-                media = "YES"
-            except:
-                media = "NO"
-                
-            
-                
-                
-            try:
-                #verifiedpurch = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/span[2]').text
-                verifiedpurch = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'avp-badge')]").text
-                
-            except:
-                verifiedpurch = "NO"
-    
-            reviewname = self_driver.find_element(By.CLASS_NAME,'a-profile-name').text
-            #reviewhead = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/span[1]/span').text
-            
-            reviewhead = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-title')]").text
-            reviewbody = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-body')]").text
-            prodname = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'product-link')]").text
-            reviewdate = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-date')]").text
-            reviewstar = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-star-rating')]").get_attribute("class")
-            
-            
-            #reviewbody = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/span[2]/div[1]/span[1]').text
-            #prodname = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[1]/a/h4').text
-            #reviewdate = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[2]/span').text
-            #reviewdate = reviewdate[reviewdate.index(' on') + len(' on'):]
-            #self_driver.save_screenshot(os.path.join(os.path.dirname(os.path.realpath('Review_validator.Py')),'SS', 'AMAZON_ROW_' + str(C_R) + '_' + reviewname + '.PNG'))
-            #reviewstar = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/i').get_attribute("class")
-            reviewstar = reviewstar.replace('a-icon a-icon-star a-star-','')
-            reviewstar = reviewstar.replace(' review-rating','')
-            
-            
-            reviewID = REVIEW_LINK
-            reviewID = reviewID.split('/ref')[0]
-            reviewID = reviewID.split('?ref')[0]
-            reviewID = reviewID[reviewID.find('s/') + len('s/'):]
-            reviewID = reviewID[reviewID.find('w/') + len('w/'):]
-            self_driver.get('https://www.google.com/')
-            time.sleep(randint(1,7))
-    
-    #--------------  FLIPKART --------------------------------------------------------------
-        elif CASEWA == "FLIPKART":
-            print('FLIPKART LINK FOUND')
-            reviewID = "FLIPKART"
-            flip_driver.get(REVIEW_LINK)
-            flip_driver.implicitly_wait(3)
-    
-            try:
-                #reviewname = self_driver.find_element_by_class_name('a-profile-name').text
-                #AWS = flip_driver.find_element(By.CLASS_NAME,'_4Vy1Ba row').text
-                AWS = flip_driver.find_element(By.CLASS_NAME,"kuNEeU").text
+           
+            #if 'Sorry, we' in captcha_check:
+             #   AWS = "UNCHECKED_DUE_TO_CAPTCHA"
+              #  ui_ws.range("B" + str(x)).value = AWS
+             #ui_ws.range("B" + str(x)).color = (255,255,0)
+              #  print(AWS)
+               # time.sleep(5)
+                #continue
+            #else:
+             #   AWS = "INVALID"
+               # ui_ws.range("B" + str(x)).value = AWS
+                #ui_ws.range("B" + str(x)).color = (255,0,0)
                 #print(AWS)
-            except:
-                AWS = "INVALID"
-                print(AWS)
-                ui_ws.range("B" + str(x)).value = AWS
+                #continue
+    
+        verifiedpurch = "BLANK"
+        AWS = "VALID"
+        print(AWS)
+        
+        #Patch Added on 10 APRIL 2024 by RA - CHECK PROFILE LINK
+        try:
+            p_link = self_driver.find_element(By.CLASS_NAME,'a-size-extra-large card-title').text
+            p_link = "PROFILE LINK"
+            ui_ws.range("B" + str(x)).value = p_link
+            ui_ws.range("B" + str(x)).color = (255,0,0)
+            continue
+        except:
+            pass
+        
+        #CHECK ALL REVIEWS
+        try:    
+            all_reviews = self_driver.find_element(By.CLASS_NAME,"a-size-medium view-point-title").text
+            if all_reviews == "Top positive review":
+                all_reviews = "ALL REVIEWS"
+                ui_ws.range("B" + str(x)).value = all_reviews
                 ui_ws.range("B" + str(x)).color = (255,0,0)
                 continue
-    
-            verifiedpurch = "BLANK"
-            AWS = "VALID"
-            try:
-                verifiedpurch = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[2]").text
-            except:
-                verifiedpurch = "NO"
-    
-            reviewname = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[1]").text
+            else:
+                pass
+        except:
+            pass
+        
+        
+        #Patch added on 10th APR 2024 - Check Media
+        try:
+            media = self_driver.find_element(By.CLASS_NAME,"review-image-tile")
+            media = "YES"
+        except:
+            media = "NO"
             
-            reviewhead = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[2]').text
-            reviewbody = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[2]').text
-            prodname = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[1]/div/div/div[1]/a').text
-            reviewdate = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[3]").text
-            #reviewdate = reviewdate[reviewdate.index(' on') + len(' on'):]
-            #flip_driver.save_screenshot(os.path.join(os.path.dirname(os.path.realpath('Review_validator.Py')),'SS', 'FLIPKART_ROW_' + str(C_R) + '_' + reviewname + '.PNG'))
-    
-            reviewstar = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[1]').text
-            #reviewstar = reviewstar.replace('a-icon a-icon-star-small a-star-small-','')
-            #reviewstar = reviewstar.replace(' review-rating aok-align-center','')
-    
-        elif CASEWA == "ALL_REVIEW":
-            AWS = "ALL REVIEWS"
-            reviewID = '-'
-            reviewname= '-'
-            verifiedpurch = '-'
-            reviewstar = '-'
-            reviewdate = '-'
-            prodname = '-'
-            reviewhead = '-'
-    
-        else:
+        try:
+            #verifiedpurch = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/span[2]').text
+            verifiedpurch = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'avp-badge')]").text
+            
+        except:
+            verifiedpurch = "NO"
+
+        reviewname = self_driver.find_element(By.CLASS_NAME,'a-profile-name').text
+        #reviewhead = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/span[1]/span').text
+        
+        reviewhead = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-title')]").text
+        reviewbody = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-body')]").text
+        prodname = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'product-link')]").text
+        reviewdate = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-date')]").text
+        reviewstar = self_driver.find_element(By.XPATH,"//*[contains(@data-hook, 'review-star-rating')]").get_attribute("class")
+        
+        
+        #reviewbody = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/span[2]/div[1]/span[1]').text
+        #prodname = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[1]/a/h4').text
+        #reviewdate = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[2]/span').text
+        #reviewdate = reviewdate[reviewdate.index(' on') + len(' on'):]
+        #self_driver.save_screenshot(os.path.join(os.path.dirname(os.path.realpath('Review_validator.Py')),'SS', 'AMAZON_ROW_' + str(C_R) + '_' + reviewname + '.PNG'))
+        #reviewstar = self_driver.find_element(By.XPATH,'/html/body/div[1]/div[1]/div[2]/div[2]/div/div[2]/div[1]/i').get_attribute("class")
+        reviewstar = reviewstar.replace('a-icon a-icon-star a-star-','')
+        reviewstar = reviewstar.replace(' review-rating','')
+        
+        
+        reviewID = REVIEW_LINK
+        reviewID = reviewID.split('/ref')[0]
+        reviewID = reviewID.split('?ref')[0]
+        reviewID = reviewID[reviewID.find('s/') + len('s/'):]
+        reviewID = reviewID[reviewID.find('w/') + len('w/'):]
+        self_driver.get('https://www.google.com/')
+        time.sleep(randint(1,7))
+
+#--------------  FLIPKART --------------------------------------------------------------
+    elif CASEWA == "FLIPKART":
+        print('FLIPKART LINK FOUND')
+        reviewID = "FLIPKART"
+        flip_driver.get(REVIEW_LINK)
+        flip_driver.implicitly_wait(3)
+
+        try:
+            #reviewname = self_driver.find_element_by_class_name('a-profile-name').text
+            #AWS = flip_driver.find_element(By.CLASS_NAME,'_4Vy1Ba row').text
+            AWS = flip_driver.find_element(By.CLASS_NAME,"kuNEeU").text
+            #print(AWS)
+        except:
             AWS = "INVALID"
             print(AWS)
             ui_ws.range("B" + str(x)).value = AWS
             ui_ws.range("B" + str(x)).color = (255,0,0)
-            time.sleep(1)
             continue
-            #print(reviewname)
-            #print(verifiedpurch)
-    
-            #print(reviewname)
-            #print(verifiedpurch)
-    
-        ui_ws.range("B" + str(x)).value = AWS
-        ui_ws.range("C" + str(x)).value = reviewID
-        ui_ws.range("D" + str(x)).value = reviewname
-        ui_ws.range("E" + str(x)).value = verifiedpurch
-        ui_ws.range("F" + str(x)).value = reviewstar
-        ui_ws.range("G" + str(x)).value = reviewdate
-        ui_ws.range("H" + str(x)).value = prodname
-        ui_ws.range("I" + str(x)).value = reviewhead
-        
-        word_count = np.char.count(reviewbody,' ') + 1
-        ui_ws.range("J" + str(x)).value = word_count
-        ui_ws.range("K" + str(x)).value = media
-        
 
-        #sheetwa.cell(row=C_R, column=10).value = reviewbody
-        #review_word_count = len(reviewbody.split())
-        #sheetwa.cell(row=C_R, column=11).value = review_word_count
-        AWS = ''
-        mywb.save(EWBP)
-    
-        myLST.append(reviewID)
-        COUNTWA = myLST.count(reviewID)
-        print(COUNTWA)
+        verifiedpurch = "BLANK"
+        AWS = "VALID"
+        try:
+            verifiedpurch = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[2]").text
+        except:
+            verifiedpurch = "NO"
+
+        reviewname = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[1]").text
         
-        if ui_ws.range("B" + str(x)).value == 'INVALID':
-            ui_ws.range("B" + str(x)).color = (255,0,0)
-        else:
-            pass
-        
-    #ERROR_HANDLER_1
-    except:    
-        ui_ws.range("B" + str(x)).value = 'UNKNOWN ERROR/INVALID LINK'
+        reviewhead = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[2]').text
+        reviewbody = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[2]').text
+        prodname = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[1]/div/div/div[1]/a').text
+        reviewdate = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[3]").text
+        #reviewdate = reviewdate[reviewdate.index(' on') + len(' on'):]
+        #flip_driver.save_screenshot(os.path.join(os.path.dirname(os.path.realpath('Review_validator.Py')),'SS', 'FLIPKART_ROW_' + str(C_R) + '_' + reviewname + '.PNG'))
+
+        reviewstar = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[1]').text
+        #reviewstar = reviewstar.replace('a-icon a-icon-star-small a-star-small-','')
+        #reviewstar = reviewstar.replace(' review-rating aok-align-center','')
+
+    elif CASEWA == "ALL_REVIEW":
+        AWS = "ALL REVIEWS"
+        reviewID = '-'
+        reviewname= '-'
+        verifiedpurch = '-'
+        reviewstar = '-'
+        reviewdate = '-'
+        prodname = '-'
+        reviewhead = '-'
+
+    else:
+        AWS = "INVALID"
+        print(AWS)
+        ui_ws.range("B" + str(x)).value = AWS
         ui_ws.range("B" + str(x)).color = (255,0,0)
-        
+        time.sleep(1)
+        continue
+        #print(reviewname)
+        #print(verifiedpurch)
+
+        #print(reviewname)
+        #print(verifiedpurch)
+
+    ui_ws.range("B" + str(x)).value = AWS
+    ui_ws.range("C" + str(x)).value = reviewID
+    ui_ws.range("D" + str(x)).value = reviewname
+    ui_ws.range("E" + str(x)).value = verifiedpurch
+    ui_ws.range("F" + str(x)).value = reviewstar
+    ui_ws.range("G" + str(x)).value = reviewdate
+    ui_ws.range("H" + str(x)).value = prodname
+    ui_ws.range("I" + str(x)).value = reviewhead
+    
+    word_count = np.char.count(reviewbody,' ') + 1
+    ui_ws.range("J" + str(x)).value = word_count
+    ui_ws.range("K" + str(x)).value = media
+    
+
+    #sheetwa.cell(row=C_R, column=10).value = reviewbody
+    #review_word_count = len(reviewbody.split())
+    #sheetwa.cell(row=C_R, column=11).value = review_word_count
+    AWS = ''
+    mywb.save(EWBP)
+
+    myLST.append(reviewID)
+    COUNTWA = myLST.count(reviewID)
+    print(COUNTWA)
+    
+    if ui_ws.range("B" + str(x)).value == 'INVALID':
+        ui_ws.range("B" + str(x)).color = (255,0,0)
+    else:
+        pass
+    
+    #ERROR_HANDLER_1
+        #except:    
+    #ui_ws.range("B" + str(x)).value = 'UNKNOWN ERROR/INVALID LINK'
+    #ui_ws.range("B" + str(x)).color = (255,0,0)
+    
 #wb.template = False
 #wb.save(EWBP)
 mywb.save(filepath)
