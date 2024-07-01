@@ -88,7 +88,7 @@ app = xw.App(visible=True)
 app.UpdateLinks = False
 app.display_alerts = False
 
-filepath = r"C:\Users\aarja\Downloads\Py\Review_sheet.xlsx"
+filepath = r"C:\Users\aarja\Downloads\Python\Review_sheet.xlsx"
 #filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
 mywb = xw.books.open(filepath, update_links=False)
 print(filepath)
