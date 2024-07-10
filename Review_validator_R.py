@@ -73,6 +73,8 @@ chrome_options.add_argument('--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 10_
 chrome_options.add_argument('--incognito')
 chrome_options.add_argument("--disable-plugins-discovery")
 chrome_options.add_argument("--start-maximized")
+chrome_options.add_argument('--ignore-certificate-errors-spki-list')
+chrome_options.add_argument('--ignore-ssl-errors')
 
 options = Options()
 self_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
