@@ -374,4 +374,8 @@ try:
     #except:
         #print('SOME ERROR OCCURED')
 except Exception as Argument: 
-    logging.exception("Error occurred while printing GeeksforGeeks") 
+    #logging.exception("Error occurred while printing GeeksforGeeks") 
+    f = open("demofile2.txt", "a")
+    f.write(str(Argument))
+    #f.close()
+
