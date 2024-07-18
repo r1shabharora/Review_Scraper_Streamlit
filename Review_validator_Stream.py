@@ -26,7 +26,7 @@ querystring = {"reviewId":"SUPGXBUKZY3WV6PN:35"}
 payload = ""
 headers = {
     "cookie": "at=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjhlM2ZhMGE3LTJmZDMtNGNiMi05MWRjLTZlNTMxOGU1YTkxZiJ9.eyJleHAiOjE3MjExNTc0NzQsImlhdCI6MTcyMTE1NTY3NCwiaXNzIjoia2V2bGFyIiwianRpIjoiYTI0Y2I2MTItNTBhMy00YzkxLTg1YjUtZWRiYmI1YTE0NWQ3IiwidHlwZSI6IkFUIiwiZElkIjoiY2xzMWVjZGR4MTJpcDB3ZDd2eGIyZXg0bi1CUjE3MDY2ODE5MDk0NDUiLCJiSWQiOiJXSVhTUU0iLCJrZXZJZCI6IlZJRkVDNzBBRTlBQTI0NDJCQUI1MDMzODVEQTFEOEZENzAiLCJ0SWQiOiJtYXBpIiwiZWFJZCI6ImZSZVFrRmktdGg4a1FiVjluS1FtTVR1SkNUakhzelpsIiwidnMiOiJMSSIsInoiOiJDSCIsIm0iOnRydWUsImdlbiI6NH0._cvBOqIWebdx8w1Hbchgoh8FviXOouGKxnFhaJtjpQM; rt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjNhNzdlZTgxLTRjNWYtNGU5Ni04ZmRlLWM3YWMyYjVlOTA1NSJ9.eyJleHAiOjE3MzcwNTMyNzQsImlhdCI6MTcyMTE1NTY3NCwiaXNzIjoia2V2bGFyIiwianRpIjoiMmE1NWMxZmYtMDc2MS00MGJkLWJhODMtNzZkZDY1NzU5OTI1IiwidHlwZSI6IlJUIiwiZElkIjoiY2xzMWVjZGR4MTJpcDB3ZDd2eGIyZXg0bi1CUjE3MDY2ODE5MDk0NDUiLCJiSWQiOiJXSVhTUU0iLCJrZXZJZCI6IlZJRkVDNzBBRTlBQTI0NDJCQUI1MDMzODVEQTFEOEZENzAiLCJ0SWQiOiJtYXBpIiwibSI6eyJ0eXBlIjoibiJ9LCJ2IjoiRUVDUjgxIn0.VmTwgPvqvYzxruFhn9euyrBeOmt-tG4Ih2Umm2x-uuI; S=d1t17UT8%2FPz8%2FRD8%2FP0o%2FPz9gcuE73c6pxfCH8ZsiavCMvb0jrE%2FNFWBRH5%2B20j5CezAmizGhnrHsna755sl8dHmgEg%3D%3D; SN=VIFEC70AE9AA2442BAB503385DA1D8FD70.TOK0E206344536643B881DBBBC872919C1D.1721155691.LI",
-    "Accept": "*/*",
+    "Accept": "application/json",
     "Accept-Language": "en-GB,en-US;q=0.9,en;q=0.8,hi;q=0.7",
     "Connection": "keep-alive",
     "Content-Type": "application/json",
@@ -60,6 +60,7 @@ def crawl_flip(input_url):
     
     response = requests.request("GET", F_URL, data=payload, headers=headers, params=querystring)
     print(response.text)
+    time.sleep(2)
     data = response.json()
     rdata =  data['RESPONSE']['reviewInfo']
     print(rdata)
@@ -77,6 +78,7 @@ def crawl_flip(input_url):
 
 # INPUT
 #input_url = 'https://www.flipkart.com/reviews/ACCGYZF55ZD93YSH:422?reviewId=64ea04a6-18bc-4120-a723-23208e7f6b3c'
+#input_url = 'https://www.flipkart.com/reviews/SMWGTBC5GDFFBXZR:11?reviewId=5bf10e6a-a71b-47df-9a0e-a5533da25a55'
 #output = crawl_flip(input_url)
 
 #df = pd.DataFrame(columns=['VALIDITY','Review ID','Reviewer name','Purchase verified','Review stars given','Review posted on','Product name','Review title','Word count','Media'])
@@ -90,7 +92,7 @@ def crawl_flip(input_url):
 branding_title = 'Developed by Arora Consulting Private Limited'
 contact_url = 'https://www.linkedin.com/in/r1shabharora/'
 
-txt = st.text_area('ENTER REVIEW LINK')
+txt = st.text_area('ENTER REVIEW LINK-OK')
 #txt = "https://www.flipkart.com/reviews/ACCGYZF55ZD93YSH:422?reviewId=64ea04a6-18bc-4120-a723-23208e7f6b3c"
 
 
