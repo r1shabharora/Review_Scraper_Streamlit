@@ -23,7 +23,7 @@ def scrape_reviews(review_links):
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
     
     
-     all_reviews = []
+    all_reviews = []
 
     for link in review_links:
         driver.get(link)
