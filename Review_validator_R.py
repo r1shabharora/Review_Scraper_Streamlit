@@ -76,7 +76,7 @@ chrome_service = Service(executable_path=chromedriver_autoinstaller.install())
 
 chrome_options = Options()
 chrome_options.add_argument("--disable-search-engine-choice-screen")
-chrome_options.add_argument('--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1')
+#chrome_options.add_argument('--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1')
 chrome_options.add_argument('--incognito')
 chrome_options.add_argument("--disable-plugins-discovery")
 chrome_options.add_argument("--start-maximized")
@@ -97,8 +97,8 @@ app = xw.App(visible=True)
 app.UpdateLinks = False
 app.display_alerts = False
 
-#filepath = r"C:\Users\aarja\Downloads\Python\Review_sheet.xlsx"
-filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
+filepath = r"C:\Users\aarja\Downloads\Python\Review_sheet.xlsx"
+#filepath = r"C:\Users\Rish\Documents\GitHub_Repositories\Review_Scraper_Streamlit\Review_sheet.xlsx"
 mywb = xw.books.open(filepath, update_links=False)
 print(filepath)
 
@@ -337,7 +337,7 @@ for x in range(ui_lr_B,ui_lr+1):
     #review_word_count = len(reviewbody.split())
     #sheetwa.cell(row=C_R, column=11).value = review_word_count
     AWS = ''
-    mywb.save(EWBP)
+    #mywb.save(EWBP)
 
     myLST.append(reviewID)
     COUNTWA = myLST.count(reviewID)
