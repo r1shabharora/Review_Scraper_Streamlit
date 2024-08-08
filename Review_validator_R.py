@@ -37,10 +37,14 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
+#
+import chromedriver_autoinstaller
+
+
 cwd = os.getcwd()
 print(cwd)
 
-script_dir = os.path.dirname(os.path.realpath('Review_validator.py'))
+#script_dir = os.path.dirname(os.path.realpath('Review_validator.py'))
 #config_dir = os.path.dirname(os.path.realpath('Review_validator.py')) + '\Config_files'
 #print(script_dir)
 #print(config_dir)
@@ -48,7 +52,7 @@ script_dir = os.path.dirname(os.path.realpath('Review_validator.py'))
 #GCDP = os.path.join(config_dir, "chromedriver.exe")
 #GCDP = r"C:\Users\aarja\Downloads\Py\Config_files\chromedriver.exe"
 #GCDP = r"C:\Users\Rish\Documents\chromedriver.exe"
-EWBP = os.path.join(script_dir, "Review_sheet.xlsx")
+#EWBP = os.path.join(script_dir, "Review_sheet.xlsx")
 #print(GCDP)
 #print(EWBP)
 
@@ -67,15 +71,22 @@ def valid_url(user_url):
     return user_url     
 
 #initial item
+
+chrome_service = Service(executable_path=chromedriver_autoinstaller.install())
+
 chrome_options = Options()
+chrome_options.add_argument("--disable-search-engine-choice-screen")
 chrome_options.add_argument('--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1')
 chrome_options.add_argument('--incognito')
 chrome_options.add_argument("--disable-plugins-discovery")
 chrome_options.add_argument("--start-maximized")
 
-options = Options()
-self_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
-flip_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+options = chrome_options
+#self_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+#flip_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+
+self_driver = webdriver.Chrome(service=chrome_service,options=options)
+flip_driver = webdriver.Chrome(service=chrome_service,options=options)
 
 #self_driver = webdriver.Chrome(GCDP,options=chrome_options)
 #flip_driver = webdriver.Chrome(GCDP)
