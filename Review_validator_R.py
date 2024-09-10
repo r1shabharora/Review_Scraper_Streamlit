@@ -152,7 +152,7 @@ for x in range(ui_lr_B,ui_lr+1):
     if 'ALL_REVIEWS' in REVIEW_LINK.upper():
         CASEWA = "ALL_REVIEW"
         ui_ws.range("B" + str(x)).color = (255,0,0)
-    elif 'AMAZON' in REVIEW_LINK.upper():
+    elif 'AMAZON' in REVIEW_LINK.upper() or 'AMZN' in REVIEW_LINK.upper():
         CASEWA = 'AMAZON'
     elif 'FLIPKART' in REVIEW_LINK.upper():
         CASEWA = 'FLIPKART'
