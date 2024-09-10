@@ -283,6 +283,16 @@ for x in range(ui_lr_B,ui_lr+1):
         except:
             verifiedpurch = "NO"
 
+
+        
+        #Patch added on 11th SEPT 2024 - Check Media
+        try:
+            media = flip_driver.find_element(By.XPATH,'//*[@class="Be4x5X Bs6FDm"]') 
+            media = "YES"
+        except:
+            media = "NO"
+        #Patch added on 11th SEPT 2024 - Check Media
+        
         reviewname = flip_driver.find_element(By.XPATH,"(//div[@class='w+ADll'])[1]").text
         
         reviewhead = flip_driver.find_element(By.XPATH,'/html/body/div/div/div[3]/div[2]/div[2]/div[2]/div[1]/div[2]').text
