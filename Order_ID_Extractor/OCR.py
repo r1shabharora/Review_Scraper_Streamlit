@@ -19,6 +19,7 @@ df = pd.DataFrame()
 df = pd.DataFrame(columns=["ORDER_ID",'FILENAME', 'SCREENSHOT_TYPE',"RESULT","TEXT"])
 #EMPTY LIST
 data = []
+data = []
 
 #capture start time of program
 s_time = datetime.now()
@@ -49,6 +50,7 @@ def get_order_id(file_path,file):
         
         try:
             order_id = ((text.split(start))[1].split(end)[0]).strip()[:20]
+            order_id = order_id.replace('\r', '').replace('\n', '').strip()
             #print(order_id)
         except:
             #print('Unable to decode order #')
