@@ -80,6 +80,8 @@ chrome_options.add_argument("--disable-search-engine-choice-screen")
 chrome_options.add_argument('--incognito')
 chrome_options.add_argument("--disable-plugins-discovery")
 chrome_options.add_argument("--start-maximized")
+chrome_options.add_argument("--headless")
+
 
 options = chrome_options
 #self_driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
@@ -142,6 +144,8 @@ for x in range(ui_lr_B,ui_lr+1):
         print("LINK is NOT empty")
 
     self_driver.get('https://www.google.com/')
+    #self_driver.get('https://www.amazon.in/review/R39IJWUXI60KIL/ref=cm_cr_srp_d_rdp_perm?ie=UTF8')
+    
     time.sleep(2)
     #print('OPENING LINK - ',REVIEW_LINK)
     self_driver.get(REVIEW_LINK)
